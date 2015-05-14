@@ -1,0 +1,65 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}Canvas Course Modules Menu Generator</title>{% endblock %}
+{% block content %}
+
+<div class="container">
+    <div class="row col-sm-12">
+    {% for message in get_flashed_messages() %}
+        <div class=flash>{{ message }}</div>
+    {% endfor %}
+    </div>
+
+    <div class="row">
+        <form method="POST" action="/" class="form-horizontal">
+        {{ form.hidden_tag() }}
+
+          <div class="form-group">
+              <label for="{{ form.token.id }}" class="col-sm-2 control-label">{{ form.token.label.text }}</label>
+              <div class="col-sm-6">
+              {{ form.token(size=20, class_="form-control") }}
+              </div>
+          </div>
+
+          <div class="form-group">
+              <label for="{{ form.course_id.id }}" class="col-sm-2 control-label">{{ form.course_id.label.text }}</label>
+              <div class="col-sm-6">
+              {{ form.course_id(size=10, class_="form-control") }}
+              </div>
+          </div>
+
+          <div class="form-group">
+              <label for="{{ form.top_level_item.id }}" class="col-sm-2 control-label">{{ form.top_level_item.label.text }}</label>
+              <div class="col-sm-6">
+              {{ form.top_level_item( class_="form-control") }}
+              </div>
+          </div>
+
+          <div class="form-group">
+              <label for="{{ form.sub_item.id }}" class="col-sm-2 control-label">{{ form.sub_item.label.text }}</label>
+              <div class="col-sm-6">
+              {{ form.sub_item(class_="form-control") }}
+              </div>
+          </div>
+
+          <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                  <input type="submit" value="Submit">
+              </div>
+          </div>
+      </form>
+    </div>
+
+    {% if form.is_submitted() %}
+    <div class="row col-sm-12">
+        <pre>
+            {% set depth = 0 %}
+            {% for item in module_data %}
+                <li>{{  item.html_url }}</li>
+            {% endfor %}
+        </pre>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}
+

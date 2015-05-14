@@ -1,0 +1,6 @@
+Flask
+drest
+unipath
+flask-bootstrap
+Flask-WTF
+python-dotenv
