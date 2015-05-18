@@ -4,3 +4,4 @@ unipath
 flask-bootstrap
 Flask-WTF
 python-dotenv
+flask_debugtoolbar

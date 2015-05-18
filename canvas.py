@@ -8,6 +8,9 @@ MAX_ITEMS_PER_REQUEST = 100
 class UnauthorizedError(Exception):
     pass
 
+class NotFoundError(Exception):
+    pass
+
 class CanvasApi(drest.API):
 
     def __init__(self, canvas_base_url, access_token):
@@ -29,7 +32,9 @@ class CanvasApi(drest.API):
             resp = self.make_request('GET', items_path)
             return resp.data
         except dRestRequestError, e:
-            if '401' in e.message:
-                raise UnauthorizedError(e.message)
+            if '401' in e.msg:
+                raise UnauthorizedError(e.msg)
+            elif '404' in e.msg:
+                raise NotFoundError(e.msg)
             else:
                 raise
