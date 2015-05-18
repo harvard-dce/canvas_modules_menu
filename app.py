@@ -60,4 +60,7 @@ def generate_html(form, data):
     return html
 
 if __name__ == '__main__':
-    app.run()
+    app.run(
+        host=env('FLASK_HOST', '127.0.0.1'),
+        port=int(env('FLASK_PORT', 5000))
+    )
