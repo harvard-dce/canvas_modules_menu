@@ -25,6 +25,7 @@ class ModuluesForm(Form):
                         validators=[DataRequired()])
     course_id = IntegerField(label='Course ID',
                              validators=[DataRequired()])
+    module_id = IntegerField(label='Module ID')
     template = TextAreaField(label='Template', default=DEFAULT_TEMPLATE)
     submit = SubmitField(label='Submit')
 
