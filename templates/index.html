@@ -11,7 +11,11 @@
 {% block scripts %}
     {{ super() }}
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.5/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/zeroclipboard/2.2.0/ZeroClipboard.js"></script>
+    <script>
+        hljs.initHighlightingOnLoad();
+        var client = new ZeroClipboard( document.getElementById('copy_button') );
+    </script>
 {% endblock %}
 
 {% block styles %}
@@ -26,22 +30,28 @@
 
 {{util.flashed_messages()}}
 
-<div class="container">
+<div class="container-fluid">
 
-  <h3>Generate Modules Menu HTML</h3>
+    <h3>Generate Modules Menu HTML</h3>
+    <div class="col-lg-6">
+
   {{ wtf.quick_form(form,
                       form_type='horizontal',
-                      horizontal_columns=('sm', 2, 6),
+                      horizontal_columns=('lg', 2, 10),
                       button_map={'submit': 'primary'})
   }}
 
-    {% if html %}
-    <div class="row col-sm-12">
-        <pre>
-            <code class="html">{{ html | trim }}</code>
-        </pre>
     </div>
-    {% endif %}
+
+    <div class="col-lg-6">
+        {% if html %}
+        <button id="copy_button" class="btn btn-info clip_button" title="Click to copy" data-clipboard-target="generated_html">Copy to Clipboard</button>
+        <pre>
+            <code id="generated_html" class="html">{{ html | trim }}</code>
+        </pre>
+        {% endif %}
+    </div>
+
 </div>
 
 
