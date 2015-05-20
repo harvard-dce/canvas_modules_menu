@@ -3,8 +3,7 @@ from flask import flash
 from flask_wtf import Form
 from wtforms import StringField, IntegerField, TextAreaField, SubmitField
 from wtforms.fields.html5 import URLField
-from wtforms.validators import url as url_validator
-from wtforms.validators import DataRequired
+from wtforms.validators import url as url_validator, DataRequired, Optional
 
 DEFAULT_TEMPLATE = """
 <div class="al-dropdown__container">
@@ -25,7 +24,7 @@ class ModuluesForm(Form):
                         validators=[DataRequired()])
     course_id = IntegerField(label='Course ID',
                              validators=[DataRequired()])
-    module_id = IntegerField(label='Module ID')
+    module_id = IntegerField(label='Module ID', validators=[Optional()])
     template = TextAreaField(label='Template', default=DEFAULT_TEMPLATE)
     submit = SubmitField(label='Submit')
 
