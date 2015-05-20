@@ -1,4 +1,5 @@
 import jinja2
+from urlparse import urlparse, urlunparse
 from unipath import Path
 from os import getenv as env
 from flask import Flask, render_template, flash
@@ -25,7 +26,7 @@ def index():
     context = {'form': form}
     if form.is_submitted():
         if form.validate():
-            canvas = CanvasApi(env('CANVAS_URL'), form.token.data)
+            canvas = CanvasApi(form.canvas_url.data, form.token.data)
             try:
                 module_data = canvas.get_modules(form.course_id.data)
                 context['html'] = generate_html(form, module_data)
@@ -46,8 +47,16 @@ def generate_html(form, data):
     current_section = None
     t = jinja2.Template(form.template.data)
     for item in data:
+
+        # skip unpublished
         if not item['published']:
             continue
+
+        # convert to relative urls
+        for key in ['html_url', 'url']:
+            url_parts = urlparse(item[key])
+            item[key] = url_parts.path
+
         if item['indent']:
             current_section['subitems'].append(item.copy())
         else:
@@ -56,6 +65,7 @@ def generate_html(form, data):
                 html += render_section(t, current_section) + "\n\n"
             current_section = item.copy()
             current_section['subitems'] = [item.copy()]
+
     html += render_section(t, current_section) + "\n\n"
     return html
 
